@@ -1,0 +1,32 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <input type="button" id="run" value="Web Assembly Check" />
+  </body>
+    <script>
+    // Check for wasm support.
+    if (!('WebAssembly' in window)) {
+      alert('you need a browser with wasm support enabled :(');
+    } else {
+      const button = document.getElementById('run');
+      button.value = "Web Assembly Ready";
+      button.addEventListener("click", () => {
+        runWebAssembly();
+      })
+    }
+
+    function runWebAssembly(){
+      console.log('runWebAssembly');
+      fetch('http://localhost:5000/wasm').then(response => {
+        console.log(response);
+        response.arrayBuffer()
+      }).then(bytes => { 
+         console.log("bytes");
+        WebAssembly.instantiate(bytes, {imports: {}})
+      }).then(results => {
+        console.log(results);
+      })
+    }
+  </script>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "hello_world_wasm_test",
+  "version": "1.0.0",
+  "description": "Hello World - Web Assembly Test",
+  "main": "hello_api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Paccione",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}

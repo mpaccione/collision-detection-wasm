@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.23/p5.min.js"></script>
+	<title>Ball Bounce</title>
+</head>
+<body>
+<style type="text/css">
+	body{
+		background-color: #888;
+	}
+	canvas {
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		position: fixed;
+	}
+</style>
+<script type="text/javascript">
+
+//P5 Setup
+function setup(){
+  createCanvas(1500, 750);
+  background('rgba(0, 0, 0, 0.3)');
+  stroke(255);
+  fill(255)
+}
+
+//Render
+function draw(){
+   background(0);
+   frame();
+}
+
+//Ball Constructor Function
+function ball(posX, posY, speedX, speedY, size) {
+  
+  this.posX = posX,
+  this.posY = posY,
+  this.speedX = speedX || 5,
+  this.speedY = speedY || 5,
+  this.size = size || 50;
+
+  this.drawBall = function(){
+    return ellipse(this.posX, this.posY, this.size, this.size);
+  },
+  
+  this.moveBall = function(){
+    if (this.posX > width){ this.speedX = random(10) * -1 }; 
+    if (this.posY > height){ this.speedY = random(10) * -1 };
+    if (this.posX < 0){ this.speedX = random(10) * 1 };
+    if (this.posY < 0){ this.speedY = random(10) * 1 };
+    this.posX += this.speedX;
+  	this.posY += this.speedY;
+  },
+
+  this.updatePos = function(){
+  	var tempArray = [this.posX, this.posY];
+  	posArray.push(tempArray);
+  },
+
+  this.collisionCheck = function(a){
+  	for (var i = 0; i < a; i++) {
+
+  		//Improved Col Detection - Takes Larger Radius of the Two Balls
+  		var colRadius = ballArray[i].size > this.size ? ballArray[i].size*0.5 : this.size*0.5;
+
+  		if (colRadius > 1) {
+			if (this.posX <= posArray[i][0] + colRadius && this.posX >= posArray[i][0] - colRadius
+				&& this.posY <= posArray[i][1] + colRadius && this.posY >= posArray[i][1] - colRadius)
+			{
+				//Reverse Direction 
+				this.speedX *= -0.66;
+				this.speedY *= -0.66;
+				ballArray[i].speedX *= -0.66;
+				ballArray[i].speedY *= -0.66;
+
+				//Make 2/3 Original Size
+				this.size *= 0.66;
+				ballArray[i].size *= 0.66;
+
+				//Add New Ball on Col
+				var newBall = new ball(ballArray[i].posX + ballArray[i].size, ballArray[i].posY + ballArray[i].size, 8.3, 8.3, ballArray[i].size);
+				ballArray.push(newBall);
+			}
+		} 
+  	}
+  }
+
+}
+
+//Ball Frame Operations
+function frame(){
+	for (var i = 0; i < ballArray.length; i++) {
+		ballArray[i].moveBall();
+		ballArray[i].drawBall();
+		ballArray[i].updatePos();
+		ballArray[i].collisionCheck(i);
+	}
+	
+	//Clear Positions at End of Frame
+	posArray = [];
+}
+
+//Balls and Vars
+var ball1 = new ball(10, 10, 5, 5, 150),
+	ball2 = new ball(1490, 740, 5, 5, 150),
+	ball3 = new ball(10, 740, 5, 5, 150),
+	ball4 = new ball(1490, 10, 5, 5, 150),
+	ballArray = [ball1,ball2, ball3, ball4],
+	posArray = [],
+	ballCount = 4;
+
+</script>
+
+</body>
+</html>

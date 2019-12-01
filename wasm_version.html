@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.23/p5.min.js"></script>
+	<title>Ball Bounce</title>
+</head>
+<body>
+<style type="text/css">
+	body{
+		background-color: #888;
+	}
+	canvas {
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		position: fixed;
+	}
+</style>
+<script type="text/javascript">
+
+//P5 Setup
+function setup(){
+  createCanvas(1500, 750);
+  background('rgba(0, 0, 0, 0.3)');
+  stroke(255);
+  fill(255)
+}
+
+//Render
+function draw(){
+   background(0);
+   frame();
+}
+
+
+//Ball Frame Operations
+function frame(){
+	// for (var i = 0; i < ballArray.length; i++) {
+	// 	ballArray[i].moveBall();
+	// 	ballArray[i].drawBall();
+	// 	ballArray[i].updatePos();
+	// 	ballArray[i].collisionCheck(i);
+	// }
+	
+	// //Clear Positions at End of Frame
+	// posArray = [];
+}
+
+//Balls and Vars
+// var ball1 = new ball(10, 10, 5, 5, 150),
+// 	ball2 = new ball(1490, 740, 5, 5, 150),
+// 	ball3 = new ball(10, 740, 5, 5, 150),
+// 	ball4 = new ball(1490, 10, 5, 5, 150),
+// 	ballArray = [ball1,ball2, ball3, ball4],
+// 	posArray = [],
+// 	ballCount = 4;
+
+</script>
+
+</body>
+</html>
