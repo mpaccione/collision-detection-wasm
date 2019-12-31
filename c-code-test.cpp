@@ -2,11 +2,11 @@
 // g++ c-code-test.cpp `simple2d --libs` -o c-code-test
 
 #include <iostream>
-#include <queue>
+#include <vector>
 #include <simple2d.h>
 
-#define HEIGHT 600
-#define WIDTH  800
+#define HEIGHT 1920
+#define WIDTH  1680
 
 using namespace std;
 
@@ -31,9 +31,9 @@ struct Ball {
 };
 
 // GLOBALS
-queue<Ball> objQueue;
+vector<Ball> bVector;
 
-void moveBall(Ball b){
+void moveBall(Ball &b){
 	if (b.posX > WIDTH){ b.speedX = (rand() % 10 + 1) * -1; }; 
     if (b.posY > HEIGHT){ b.speedY = (rand() % 10 + 1) * -1; };
     if (b.posX < 0){ b.speedX = rand() % 10 + 1; };
@@ -43,11 +43,7 @@ void moveBall(Ball b){
   	b.posY += b.speedY;
 }
 
-void drawBall(Ball b){
-	S2D_DrawCircle( b.posX, b.posY, b.size/2, 360, 255, 255, 255, 1 );
-}
-
-void collisionCheck(Ball b){
+//void collisionCheck(Ball &b){
 	// Javascript Code to be converted to C++
 
 	// for (var i = 0; i < a; i++) {
@@ -75,48 +71,44 @@ void collisionCheck(Ball b){
 		// 		}
 		// 	} 
  //  	}
-}
+//}
 
-// LOGGING
+// DEBUGGING - LOGGING
 std::ostream &operator<<(std::ostream &os, const Ball &b) { 
 	return os << "pX: " << b.posX << "\npY: " << b.posY << "\nsX: " << b.speedX << "\nsY: " << b.speedY << "\n" << endl;
 }
 
 void update(){
 	// Update Application State
+	for (int i = 0; i < bVector.size(); ++i){
+		Ball& b = bVector.at(i);
+		moveBall(b);
+		// cout << "posX " << b.posX << " posY " << b.posY << endl;
+	}
 }
 
 void render(){
-	// TEST
-	S2D_DrawCircle( 100, 100, 50, 360, 255, 255, 255, 1 );
-
-	// Draw Stuff
-	// while (!objQueue.empty()){
-	// 	drawBall(objQueue.front());
-	// 	objQueue.pop();
-	// }
+	// Draw Balls
+	for (int i = 0; i < bVector.size(); ++i){
+		Ball& b = bVector.at(i);
+		S2D_DrawCircle( b.posX, b.posY, b.size, 360, 255, 255, 255, 1 );
+	}
 }
 
 int main(){
-	Ball obj1(10, 10, 5, 5, 150);
-	Ball obj2(1490, 740, 5, 5, 150);
-	Ball obj3(10, 740, 5, 5, 150); 
-	Ball obj4(1490, 10, 5, 5, 150); 
+	Ball b1(10, 10, 5, 5, 150);
+	Ball b2(1490, 740, 5, 5, 150);
+	Ball b3(10, 740, 5, 5, 150); 
+	Ball b4(1490, 10, 5, 5, 150); 
 
-	objQueue.push( obj1 );
-	objQueue.push( obj2 );
-	objQueue.push( obj3 );
-	objQueue.push( obj4 );
-
-	// TEST - LOGGING
-	// while (!objQueue.empty()){
-	// 	cout << objQueue.front();
-	// 	objQueue.pop();
-	// }
+	bVector.push_back(b1);
+	bVector.push_back(b2);
+	bVector.push_back(b3);
+	bVector.push_back(b4);
 
 	// 2D Drawing 
 	S2D_Window *window = S2D_CreateWindow(
-		"2D Collision Detection", 800, 600, NULL, render, 0
+		"2D Collision Detection", WIDTH, HEIGHT, update, render, 0
 	);
 
 	S2D_Show(window);
